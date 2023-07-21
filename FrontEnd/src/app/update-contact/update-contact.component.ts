@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Contact} from "../contact";
 import {ContactService} from "../contact.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-update-contact',
@@ -9,10 +9,17 @@ import {Router} from "@angular/router";
   styleUrls: ['./update-contact.component.css']
 })
 export class UpdateContactComponent {
-  contact: Contact = new Contact()
 
+  id: number = this.route.snapshot.params['id'];
+  contact: Contact = new Contact()
   constructor(private contactService: ContactService,
-              private router: Router) { }
+              private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.contactService.getContactById(this.id).subscribe(data => {
+      this.contact = data;
+    }, error => console.log(error));
+  }
 
   onSubmit() {
     console.log(this.contact);

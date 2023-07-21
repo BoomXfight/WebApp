@@ -15,7 +15,11 @@ export class ContactService {
     return this.httpClient.get<Contact[]>(`${this.baseURL}`);
   }
 
-  createContact(contact: Contact): Observable<Object>{
+  createContact(contact: Contact): Observable<Object> {
     return this.httpClient.post(`${this.baseURL}`, contact);
+  }
+
+  getContactById(id: number): Observable<Contact> {
+    return this.httpClient.get<Contact>(`${this.baseURL}/${id}`);
   }
 }
