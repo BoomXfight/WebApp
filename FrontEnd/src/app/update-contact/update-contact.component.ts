@@ -13,7 +13,8 @@ export class UpdateContactComponent {
   id: number = this.route.snapshot.params['id'];
   contact: Contact = new Contact()
   constructor(private contactService: ContactService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.contactService.getContactById(this.id).subscribe(data => {
@@ -22,6 +23,12 @@ export class UpdateContactComponent {
   }
 
   onSubmit() {
-    console.log(this.contact);
+    this.contactService.updateContact(this.id, this.contact).subscribe(data => {
+      this.goToContactList();
+    }, error => console.log(error));
+  }
+
+  goToContactList(){
+    this.router.navigate(['/contacts']);
   }
 }

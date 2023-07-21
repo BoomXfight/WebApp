@@ -2,6 +2,7 @@ package com.andrej.springboot.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Contact {
+public class ContactDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +33,7 @@ public class Contact {
     private String email;
 
     @Column(name = "phone_number")
+    @Size(min = 10, max = 10)
     private String phoneNumber;
 
     @Column(name = "address")
