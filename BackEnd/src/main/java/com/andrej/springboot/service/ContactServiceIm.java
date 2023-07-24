@@ -4,7 +4,7 @@ import com.andrej.springboot.exception.InvalidEmailFormatException;
 import com.andrej.springboot.exception.InvalidNameFormatException;
 import com.andrej.springboot.exception.InvalidPhoneNumberFormatException;
 import com.andrej.springboot.exception.ResourceNotFoundException;
-import com.andrej.springboot.model.ContactDAO;
+import com.andrej.springboot.model.dao.ContactDAO;
 import com.andrej.springboot.model.dto.ContactDTO;
 import com.andrej.springboot.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +58,7 @@ public class ContactServiceIm implements ContactService {
         dao.setLastName(contactDTO.getLastName());
         dao.setAge(contactDTO.getAge());
         dao.setEmail(contactDTO.getEmail());
-        dao.setAddress(contactDTO.getAddress());
+        dao.setAddressDAO(contactDTO.getAddressDAO());
         dao.setPhoneNumber(contactDTO.getPhoneNumber());
         return contactRepository.save(dao);
     }
@@ -68,7 +68,7 @@ public class ContactServiceIm implements ContactService {
         ContactDAO contactDAO = contactRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Contact with id: " + id + " does not exist."));
 
-        contactDAO.setAddress(contactDAODetails.getAddress());
+        contactDAO.setAddressDAO(contactDAODetails.getAddressDAO());
         contactDAO.setFirstName(contactDAODetails.getFirstName());
         contactDAO.setLastName(contactDAODetails.getLastName());
         contactDAO.setAge(contactDAODetails.getAge());

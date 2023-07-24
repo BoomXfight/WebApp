@@ -2,7 +2,7 @@ package com.andrej.springboot.controller;
 
 import java.util.List;
 
-import com.andrej.springboot.model.ContactDAO;
+import com.andrej.springboot.model.dao.ContactDAO;
 import com.andrej.springboot.model.dto.ContactDTO;
 import com.andrej.springboot.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;

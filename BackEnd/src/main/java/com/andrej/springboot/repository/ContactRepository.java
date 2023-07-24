@@ -1,6 +1,6 @@
 package com.andrej.springboot.repository;
 
-import com.andrej.springboot.model.ContactDAO;
+import com.andrej.springboot.model.dao.ContactDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.andrej.springboot.service;
 
-import com.andrej.springboot.model.ContactDAO;
+import com.andrej.springboot.model.dao.ContactDAO;
 import com.andrej.springboot.model.dto.ContactDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

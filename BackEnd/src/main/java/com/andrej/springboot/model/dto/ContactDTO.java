@@ -1,10 +1,6 @@
 package com.andrej.springboot.model.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
+import com.andrej.springboot.model.dao.AddressDAO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +22,5 @@ public class ContactDTO { //data transfer object
 
     private String phoneNumber;
 
-    private String address;
+    private AddressDAO address;
 }
