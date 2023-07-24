@@ -39,7 +39,7 @@ public class ContactController {
     }
 
     @PutMapping("/contacts/{id}")
-    public ResponseEntity<ContactDAO> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails) {
+    public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails) {
         return service.updateContact(id, contactDAODetails);
     }
 

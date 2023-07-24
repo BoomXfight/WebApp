@@ -9,11 +9,13 @@ import com.andrej.springboot.model.dto.ContactDTO;
 import com.andrej.springboot.repository.AddressRepository;
 import com.andrej.springboot.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
@@ -27,17 +29,14 @@ public class ContactServiceIm implements ContactService {
 
     @Override
     public ResponseEntity<?> getContactById(long id) {
-        Optional<ContactDAO> contactDAO = contactRepository.findById(id);
-        if(contactDAO.isPresent()) {
+        Optional<ContactDAO> optionalContact = contactRepository.findById(id);
 
-
+        if(optionalContact.isPresent()) {
+            ContactDAO contactDAO = optionalContact.get();
+            return ResponseEntity.ok(contactDAO);
         }
         else
-        {
-            return ResponseEntity.status(500).body(new R)
-        }
-
-        return ResponseEntity.ok(contactDAO);
+            return new ResponseEntity<>("Contact with id: " + id + " was not found.", HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -52,27 +51,27 @@ public class ContactServiceIm implements ContactService {
 
         //Check for the logical and format errors
         if (!isValidNameFormat(dto.getFirstName())) {
-            return ResponseEntity.status(500).body(new RuntimeException("First name too short."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short.");
         }
 
         if (!isValidNameFormat(dto.getLastName())) {
-            return ResponseEntity.status(500).body(new RuntimeException("Last name too short."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short.");
         }
 
         if (!isValidEmailFormat(dto.getEmail())) {
-            return ResponseEntity.status(500).body(new RuntimeException("Invalid email format."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format.");
         }
 
         if (!isValidNumber(dto.getPhoneNumber())) {
-            return ResponseEntity.status(500).body(new RuntimeException("Invalid phone number format."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format.");
         }
 
         if(dto.getAge() <= 15) {
-            return ResponseEntity.status(500).body(new RuntimeException("Age less than 15."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15.");
         }
 
         if(!isValidAddress(dto.getAddress())) {
-            return ResponseEntity.status(500).body(new RuntimeException("Invalid address"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
         }
 
         AddressDAO existingAddress = addressRepository.findByCountryCityStreetAndHouseNumber(
@@ -99,19 +98,61 @@ public class ContactServiceIm implements ContactService {
     }
 
     @Override
-    public ResponseEntity<ContactDAO> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails) {
-        ContactDAO contactDAO = contactRepository.findById(id);
+    public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO updateContact) {
+        Optional<ContactDAO> optionalContact = contactRepository.findById(id);
 
+        if(optionalContact.isPresent()) {
+            ContactDAO contactDAO = new ContactDAO();
 
-        contactDAO.setAddress(contactDAODetails.getAddress());
-        contactDAO.setFirstName(contactDAODetails.getFirstName());
-        contactDAO.setLastName(contactDAODetails.getLastName());
-        contactDAO.setAge(contactDAODetails.getAge());
-        contactDAO.setEmail(contactDAODetails.getEmail());
-        contactDAO.setPhoneNumber(contactDAODetails.getPhoneNumber());
+            if (!isValidNameFormat(updateContact.getFirstName())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short.");
+            }
 
-        ContactDAO updatedContactDAO = contactRepository.save(contactDAO);
-        return ResponseEntity.ok(updatedContactDAO);
+            if (!isValidNameFormat(updateContact.getLastName())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short.");
+            }
+
+            if (!isValidEmailFormat(updateContact.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format.");
+            }
+
+            if (!isValidNumber(updateContact.getPhoneNumber())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format.");
+            }
+
+            if(updateContact.getAge() <= 15) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15.");
+            }
+
+            if(!isValidAddress(updateContact.getAddress())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
+            }
+
+            AddressDAO existingAddress = addressRepository.findByCountryCityStreetAndHouseNumber(
+                    updateContact.getAddress().getCountry(),
+                    updateContact.getAddress().getCity(),
+                    updateContact.getAddress().getStreet(),
+                    updateContact.getAddress().getHouse_number()
+            );
+
+            if (existingAddress != null)
+                updateContact.setAddress(existingAddress);
+            else
+                addressRepository.save(updateContact.getAddress());
+
+            contactDAO.setAddress(updateContact.getAddress());
+            contactDAO.setFirstName(updateContact.getFirstName());
+            contactDAO.setLastName(updateContact.getLastName());
+            contactDAO.setAge(updateContact.getAge());
+            contactDAO.setEmail(updateContact.getEmail());
+            contactDAO.setPhoneNumber(updateContact.getPhoneNumber());
+
+            ContactDAO updatedContactDAO = contactRepository.save(contactDAO);
+            return ResponseEntity.ok(updatedContactDAO);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found");
+        }
     }
 
     @Override
