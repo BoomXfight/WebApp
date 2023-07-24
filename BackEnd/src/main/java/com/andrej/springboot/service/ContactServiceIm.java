@@ -74,6 +74,7 @@ public class ContactServiceIm implements ContactService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
         }
 
+        /*
         AddressDAO existingAddress = addressRepository.findByCountryCityStreetAndHouseNumber(
                 dto.getAddress().getCountry(),
                 dto.getAddress().getCity(),
@@ -81,10 +82,11 @@ public class ContactServiceIm implements ContactService {
                 dto.getAddress().getHouse_number()
         );
 
-        if (existingAddress != null)
-            dto.setAddress(existingAddress);
-        else
+        if (existingAddress == null) {
             addressRepository.save(dto.getAddress());
+        }
+        */
+
 
         dao.setFirstName(dto.getFirstName());
         dao.setLastName(dto.getLastName());

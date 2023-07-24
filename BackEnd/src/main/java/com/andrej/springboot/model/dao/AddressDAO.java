@@ -1,5 +1,7 @@
 package com.andrej.springboot.model.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +32,4 @@ public class AddressDAO {
 
     @Column(name = "house_number")
     private int house_number;
-
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
-    private List<ContactDAO> contacts;
 }

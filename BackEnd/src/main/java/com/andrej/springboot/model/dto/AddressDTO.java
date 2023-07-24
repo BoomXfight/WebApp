@@ -24,6 +24,4 @@ public class AddressDTO {
     private String street;
 
     private int house_number;
-
-    private List<ContactDTO> contacts;
 }
