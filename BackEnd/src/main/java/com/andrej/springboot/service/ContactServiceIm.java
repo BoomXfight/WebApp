@@ -74,26 +74,24 @@ public class ContactServiceIm implements ContactService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
         }
 
-        /*
-        AddressDAO existingAddress = addressRepository.findByCountryCityStreetAndHouseNumber(
-                dto.getAddress().getCountry(),
-                dto.getAddress().getCity(),
-                dto.getAddress().getStreet(),
-                dto.getAddress().getHouse_number()
-        );
+        if(addressRepository.existsByCityAndAndCountryAndStreetAndHouseNumber(dto.getAddress().getCity(),
+                dto.getAddress().getCountry(), dto.getAddress().getStreet(), dto.getAddress().getHouseNumber())) {
+            AddressDAO existingAddress = addressRepository.findByCityAndCountryAndStreetAndHouseNumber(dto.getAddress().getCity(),
+                    dto.getAddress().getCountry(), dto.getAddress().getStreet(), dto.getAddress().getHouseNumber());
 
-        if (existingAddress == null) {
-            addressRepository.save(dto.getAddress());
+            dao.setAddress(existingAddress);
+            dao.getAddress().setId(existingAddress.getId());
         }
-        */
-
+        else {
+            addressRepository.save(dto.getAddress());
+            dao.setAddress(dto.getAddress());
+        }
 
         dao.setFirstName(dto.getFirstName());
         dao.setLastName(dto.getLastName());
         dao.setAge(dto.getAge());
         dao.setEmail(dto.getEmail());
         dao.setPhoneNumber(dto.getPhoneNumber());
-        dao.setAddress(dto.getAddress());
 
         contactRepository.save(dao);
         return ResponseEntity.ok(dao);
@@ -130,11 +128,11 @@ public class ContactServiceIm implements ContactService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
             }
 
-            AddressDAO existingAddress = addressRepository.findByCountryCityStreetAndHouseNumber(
-                    updateContact.getAddress().getCountry(),
+            AddressDAO existingAddress = addressRepository.findByCityAndCountryAndStreetAndHouseNumber(
                     updateContact.getAddress().getCity(),
+                    updateContact.getAddress().getCountry(),
                     updateContact.getAddress().getStreet(),
-                    updateContact.getAddress().getHouse_number()
+                    updateContact.getAddress().getHouseNumber()
             );
 
             if (existingAddress != null)
@@ -193,7 +191,7 @@ public class ContactServiceIm implements ContactService {
         if(address.getCountry().length() < 4 || //Chad
            address.getCity().length() < 4 || // Goa
            address.getStreet().length() < 3 || // estimate
-           address.getHouse_number() < 1)
+           address.getHouseNumber() < 1)
             return false;
 
         return true;

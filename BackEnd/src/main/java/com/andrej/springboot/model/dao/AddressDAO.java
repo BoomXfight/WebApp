@@ -31,5 +31,5 @@ public class AddressDAO {
     private String street;
 
     @Column(name = "house_number")
-    private int house_number;
+    private int houseNumber;
 }
