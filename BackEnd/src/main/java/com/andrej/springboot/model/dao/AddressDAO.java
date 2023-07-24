@@ -19,14 +19,18 @@ public class AddressDAO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String state;
+    @Column(name = "country")
+    private String country;
 
+    @Column(name = "city")
     private String city;
 
+    @Column(name = "street")
     private String street;
 
+    @Column(name = "house_number")
     private int house_number;
 
-    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<ContactDAO> contacts;
 }

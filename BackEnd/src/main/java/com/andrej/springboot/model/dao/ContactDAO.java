@@ -1,6 +1,5 @@
 package com.andrej.springboot.model.dao;
 
-import com.andrej.springboot.model.dao.AddressDAO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -26,18 +25,17 @@ public class ContactDAO {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
-    @Email
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", unique = true)
     @Size(min = 10, max = 10)
     private String phoneNumber;
 
     @Column(name = "age")
     private byte age;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private AddressDAO address;
 }

@@ -29,12 +29,12 @@ public class ContactController {
     }
 
     @GetMapping("/contacts/{id}")
-    public ResponseEntity<ContactDAO> getContactById(@PathVariable long id) {
+    public ResponseEntity<?> getContactById(@PathVariable long id) {
         return service.getContactById(id);
     }
 
     @PostMapping("/contacts")
-    public ContactDAO saveContact(@RequestBody ContactDTO contactDTO) {
+    public ResponseEntity<?> saveContact(@RequestBody ContactDTO contactDTO) {
         return service.saveContact(contactDTO);
     }
 

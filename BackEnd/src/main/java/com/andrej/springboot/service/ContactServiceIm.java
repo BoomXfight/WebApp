@@ -1,11 +1,12 @@
 package com.andrej.springboot.service;
 
 import com.andrej.springboot.exception.InvalidEmailFormatException;
-import com.andrej.springboot.exception.InvalidNameFormatException;
-import com.andrej.springboot.exception.InvalidPhoneNumberFormatException;
 import com.andrej.springboot.exception.ResourceNotFoundException;
+import com.andrej.springboot.model.dao.AddressDAO;
 import com.andrej.springboot.model.dao.ContactDAO;
+import com.andrej.springboot.model.dto.AddressDTO;
 import com.andrej.springboot.model.dto.ContactDTO;
+import com.andrej.springboot.repository.AddressRepository;
 import com.andrej.springboot.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +15,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Spliterator;
 
 @Service
 @RequiredArgsConstructor
 public class ContactServiceIm implements ContactService {
 
     private final ContactRepository contactRepository;
+    private final AddressRepository addressRepository;
 
     @Override
-    public ResponseEntity<ContactDAO> getContactById(long id) {
-        ContactDAO contactDAO = contactRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Contact with id: " + id + " does not exist."));
+    public ResponseEntity<?> getContactById(long id) {
+        Optional<ContactDAO> contactDAO = contactRepository.findById(id);
+        if(contactDAO.isPresent()) {
+
+
+        }
+        else
+        {
+            return ResponseEntity.status(500).body(new R)
+        }
 
         return ResponseEntity.ok(contactDAO);
     }
@@ -35,40 +46,64 @@ public class ContactServiceIm implements ContactService {
     }
 
     @Override
-    public ContactDAO saveContact(@RequestBody ContactDTO contactDTO) {
+    public ResponseEntity<?> saveContact(@RequestBody ContactDTO dto) {
         ContactDAO dao = new ContactDAO();
+        // AddressDAO
 
         //Check for the logical and format errors
-        if (!isValidNameFormat(contactDTO.getFirstName()))
-            throw new InvalidNameFormatException("Invalid first name format.");
+        if (!isValidNameFormat(dto.getFirstName())) {
+            return ResponseEntity.status(500).body(new RuntimeException("First name too short."));
+        }
 
-        if (!isValidNameFormat(contactDTO.getLastName()))
-            throw new InvalidNameFormatException("Invalid last name format.");
+        if (!isValidNameFormat(dto.getLastName())) {
+            return ResponseEntity.status(500).body(new RuntimeException("Last name too short."));
+        }
 
-        if (!isValidEmailFormat(contactDTO.getEmail()))
-            throw new InvalidEmailFormatException("Invalid email format.");
+        if (!isValidEmailFormat(dto.getEmail())) {
+            return ResponseEntity.status(500).body(new RuntimeException("Invalid email format."));
+        }
 
-        if(!isValidNumber(contactDTO.getPhoneNumber()))
-            throw new InvalidPhoneNumberFormatException("Invalid phone number format.");
+        if (!isValidNumber(dto.getPhoneNumber())) {
+            return ResponseEntity.status(500).body(new RuntimeException("Invalid phone number format."));
+        }
 
-        if(contactDTO.getAge() <= 1) // Question, do I need to make custom?
-            throw new RuntimeException("Invalid age.");
+        if(dto.getAge() <= 15) {
+            return ResponseEntity.status(500).body(new RuntimeException("Age less than 15."));
+        }
 
-        dao.setFirstName(contactDTO.getFirstName());
-        dao.setLastName(contactDTO.getLastName());
-        dao.setAge(contactDTO.getAge());
-        dao.setEmail(contactDTO.getEmail());
-        dao.setAddressDAO(contactDTO.getAddressDAO());
-        dao.setPhoneNumber(contactDTO.getPhoneNumber());
-        return contactRepository.save(dao);
+        if(!isValidAddress(dto.getAddress())) {
+            return ResponseEntity.status(500).body(new RuntimeException("Invalid address"));
+        }
+
+        AddressDAO existingAddress = addressRepository.findByCountryCityStreetAndHouseNumber(
+                dto.getAddress().getCountry(),
+                dto.getAddress().getCity(),
+                dto.getAddress().getStreet(),
+                dto.getAddress().getHouse_number()
+        );
+
+        if (existingAddress != null)
+            dto.setAddress(existingAddress);
+        else
+            addressRepository.save(dto.getAddress());
+
+        dao.setFirstName(dto.getFirstName());
+        dao.setLastName(dto.getLastName());
+        dao.setAge(dto.getAge());
+        dao.setEmail(dto.getEmail());
+        dao.setPhoneNumber(dto.getPhoneNumber());
+        dao.setAddress(dto.getAddress());
+
+        contactRepository.save(dao);
+        return ResponseEntity.ok(dao);
     }
 
     @Override
     public ResponseEntity<ContactDAO> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails) {
-        ContactDAO contactDAO = contactRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Contact with id: " + id + " does not exist."));
+        ContactDAO contactDAO = contactRepository.findById(id);
 
-        contactDAO.setAddressDAO(contactDAODetails.getAddressDAO());
+
+        contactDAO.setAddress(contactDAODetails.getAddress());
         contactDAO.setFirstName(contactDAODetails.getFirstName());
         contactDAO.setLastName(contactDAODetails.getLastName());
         contactDAO.setAge(contactDAODetails.getAge());
@@ -97,7 +132,27 @@ public class ContactServiceIm implements ContactService {
     }
 
     private boolean isValidNumber(String number) {
-        String digitsPattern = "\\d{10}";
-        return number.matches(digitsPattern);
+        if(number.length() != 10)
+            return false;
+
+        for (int i = 0; i < number.length(); i++) {
+            char ch = number.charAt(i);
+
+            if (!Character.isDigit(ch)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isValidAddress(AddressDAO address) {
+        if(address.getCountry().length() < 4 || //Chad
+           address.getCity().length() < 4 || // Goa
+           address.getStreet().length() < 3 || // estimate
+           address.getHouse_number() < 1)
+            return false;
+
+        return true;
     }
 }

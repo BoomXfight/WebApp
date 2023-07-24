@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface ContactService {
 
-    public ResponseEntity<ContactDAO> getContactById(@PathVariable long id);
+    public ResponseEntity<?> getContactById(@PathVariable long id);
 
     public List<ContactDAO> getAllContacts();
 
-    public ContactDAO saveContact(@RequestBody ContactDTO contactDTO);
+    public ResponseEntity<?> saveContact(@RequestBody ContactDTO contactDTO);
 
-    public ResponseEntity<ContactDAO> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails);
+    public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails);
 
     public ResponseEntity<?> deleteContact(@PathVariable long id);
 }
