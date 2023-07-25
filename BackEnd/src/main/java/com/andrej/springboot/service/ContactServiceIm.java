@@ -131,39 +131,41 @@ public class ContactServiceIm implements ContactService {
         }
 
         Optional<ContactDAO> optionalContact = contactRepository.findById(id);
-        if(optionalContact.isPresent()) {
-            //Check whether the address exists
-            if(addressRepository.existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
+        if (optionalContact.isPresent()) {
+            ContactDAO dao = optionalContact.get();
+
+            // Check whether the address exists
+            if (addressRepository.existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
                     updateContact.getAddress().getCity(), updateContact.getAddress().getCountry(),
                     updateContact.getAddress().getStreet(), updateContact.getAddress().getHouseNumber())) {
+
                 AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
                         updateContact.getAddress().getCity(), updateContact.getAddress().getCountry(),
                         updateContact.getAddress().getStreet(), updateContact.getAddress().getHouseNumber());
 
-                updateContact.setAddress(existingAddress);
-                updateContact.getAddress().setId(existingAddress.getId());
-            }
-            else {
-                //Formatting and adding a new address
-                updateContact.getAddress().setCountry(updateContact.getAddress().getCountry().toLowerCase());
-                updateContact.getAddress().setCity(updateContact.getAddress().getCity().toLowerCase());
-                updateContact.getAddress().setStreet(updateContact.getAddress().getStreet().toLowerCase());
+                dao.setAddress(existingAddress);
+                dao.getAddress().setId(existingAddress.getId()); // Probably unnecessary
+            } else {
+                //Properly format the new address
+                AddressDAO newAddress = new AddressDAO();
+                newAddress.setCountry(updateContact.getAddress().getCountry().toLowerCase());
+                newAddress.setCity(updateContact.getAddress().getCity().toLowerCase());
+                newAddress.setStreet(updateContact.getAddress().getStreet().toLowerCase());
+                newAddress.setHouseNumber(updateContact.getAddress().getHouseNumber());
 
-                addressRepository.save(updateContact.getAddress());
+                addressRepository.save(newAddress); //Add to the address repository
+                dao.setAddress(newAddress);
             }
 
-            ContactDAO dao = optionalContact.get();
             dao.setFirstName(updateContact.getFirstName());
             dao.setLastName(updateContact.getLastName());
             dao.setPhoneNumber(updateContact.getPhoneNumber());
             dao.setEmail(updateContact.getEmail());
             dao.setAge(updateContact.getAge());
-            dao.setAddress(updateContact.getAddress());
-
             contactRepository.save(dao);
-            return ResponseEntity.status(HttpStatus.OK).body("Successfully updated.");
-        }
-        else {
+
+            return ResponseEntity.status(HttpStatus.OK).body("Successfully updated");
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found, therefore not updated.");
         }
     }
