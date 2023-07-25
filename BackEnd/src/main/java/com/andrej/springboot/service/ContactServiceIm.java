@@ -74,15 +74,22 @@ public class ContactServiceIm implements ContactService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
         }
 
-        if(addressRepository.existsByCityAndCountryAndStreetIgnoreCaseAndHouseNumber(dto.getAddress().getCity(),
-                dto.getAddress().getCountry(), dto.getAddress().getStreet(), dto.getAddress().getHouseNumber())) {
-            AddressDAO existingAddress = addressRepository.findByCityAndCountryAndStreetAndHouseNumber(dto.getAddress().getCity(),
-                    dto.getAddress().getCountry(), dto.getAddress().getStreet(), dto.getAddress().getHouseNumber());
+        //Check whether the address exists
+        if(addressRepository.existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
+                dto.getAddress().getCity(), dto.getAddress().getCountry(), dto.getAddress().getStreet(),
+                dto.getAddress().getHouseNumber())) {
+            AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber
+                    (dto.getAddress().getCity(), dto.getAddress().getCountry(), dto.getAddress().getStreet(), dto.getAddress().getHouseNumber());
 
             dao.setAddress(existingAddress);
             dao.getAddress().setId(existingAddress.getId());
         }
         else {
+            //Formatting and adding a new address
+            dto.getAddress().setCountry(dto.getAddress().getCountry().toLowerCase());
+            dto.getAddress().setCity(dto.getAddress().getCity().toLowerCase());
+            dto.getAddress().setStreet(dto.getAddress().getStreet().toLowerCase());
+
             addressRepository.save(dto.getAddress());
             dao.setAddress(dto.getAddress());
         }
@@ -128,7 +135,7 @@ public class ContactServiceIm implements ContactService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
             }
 
-            AddressDAO existingAddress = addressRepository.findByCityAndCountryAndStreetAndHouseNumber(
+            AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
                     updateContact.getAddress().getCity(),
                     updateContact.getAddress().getCountry(),
                     updateContact.getAddress().getStreet(),
