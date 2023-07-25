@@ -14,4 +14,5 @@ public interface AddressRepository extends JpaRepository<AddressDAO, Long> {
     AddressDAO findByCityAndCountryAndStreetAndHouseNumber(String city, String country, String street , int houseNumber);
 
     Boolean existsByCityAndAndCountryAndStreetAndHouseNumber(String city, String country, String street , int houseNumber);
+    Boolean existsByCityAndCountryAndStreetIgnoreCaseAndHouseNumber(String city, String country, String street , int houseNumber);
 }
