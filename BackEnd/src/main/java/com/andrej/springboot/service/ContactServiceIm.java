@@ -105,63 +105,70 @@ public class ContactServiceIm implements ContactService {
 
     @Override // TO DO
     public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO updateContact) {
+        // Check the validness of the updateContact
+        if (!isValidNameFormat(updateContact.getFirstName())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short.");
+        }
+
+        if (!isValidNameFormat(updateContact.getLastName())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short.");
+        }
+
+        if (!isValidEmailFormat(updateContact.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format.");
+        }
+
+        if (!isValidNumber(updateContact.getPhoneNumber())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format.");
+        }
+
+        if(updateContact.getAge() < 15) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15.");
+        }
+
+        if(!isValidAddress(updateContact.getAddress())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
+        }
+
         Optional<ContactDAO> optionalContact = contactRepository.findById(id);
-
         if(optionalContact.isPresent()) {
-            ContactDAO contactDAO = new ContactDAO();
+            //Check whether the address exists
+            if(addressRepository.existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
+                    updateContact.getAddress().getCity(), updateContact.getAddress().getCountry(),
+                    updateContact.getAddress().getStreet(), updateContact.getAddress().getHouseNumber())) {
+                AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
+                        updateContact.getAddress().getCity(), updateContact.getAddress().getCountry(),
+                        updateContact.getAddress().getStreet(), updateContact.getAddress().getHouseNumber());
 
-            if (!isValidNameFormat(updateContact.getFirstName())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short.");
-            }
-
-            if (!isValidNameFormat(updateContact.getLastName())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short.");
-            }
-
-            if (!isValidEmailFormat(updateContact.getEmail())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format.");
-            }
-
-            if (!isValidNumber(updateContact.getPhoneNumber())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format.");
-            }
-
-            if(updateContact.getAge() < 15) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15.");
-            }
-
-            if(!isValidAddress(updateContact.getAddress())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
-            }
-
-            AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
-                    updateContact.getAddress().getCity(),
-                    updateContact.getAddress().getCountry(),
-                    updateContact.getAddress().getStreet(),
-                    updateContact.getAddress().getHouseNumber()
-            );
-
-            if (existingAddress != null)
                 updateContact.setAddress(existingAddress);
-            else
+                updateContact.getAddress().setId(existingAddress.getId());
+            }
+            else {
+                //Formatting and adding a new address
+                updateContact.getAddress().setCountry(updateContact.getAddress().getCountry().toLowerCase());
+                updateContact.getAddress().setCity(updateContact.getAddress().getCity().toLowerCase());
+                updateContact.getAddress().setStreet(updateContact.getAddress().getStreet().toLowerCase());
+
                 addressRepository.save(updateContact.getAddress());
+            }
 
-            contactDAO.setAddress(updateContact.getAddress());
-            contactDAO.setFirstName(updateContact.getFirstName());
-            contactDAO.setLastName(updateContact.getLastName());
-            contactDAO.setAge(updateContact.getAge());
-            contactDAO.setEmail(updateContact.getEmail());
-            contactDAO.setPhoneNumber(updateContact.getPhoneNumber());
+            ContactDAO dao = optionalContact.get();
+            dao.setFirstName(updateContact.getFirstName());
+            dao.setLastName(updateContact.getLastName());
+            dao.setPhoneNumber(updateContact.getPhoneNumber());
+            dao.setEmail(updateContact.getEmail());
+            dao.setAge(updateContact.getAge());
+            dao.setAddress(updateContact.getAddress());
 
-            ContactDAO updatedContactDAO = contactRepository.save(contactDAO);
-            return ResponseEntity.ok(updatedContactDAO);
+            contactRepository.save(dao);
+            return ResponseEntity.status(HttpStatus.OK).body("Successfully updated.");
         }
         else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found, therefore not updated.");
         }
     }
 
-    @Override // TO DO
+    @Override
     public ResponseEntity<?> deleteContact(@PathVariable long id) {
         Optional<ContactDAO> optional = contactRepository.findById(id);
         if(optional.isPresent()) {
