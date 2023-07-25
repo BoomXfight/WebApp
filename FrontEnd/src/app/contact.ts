@@ -1,19 +1,21 @@
 export class Contact {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    age: number;
-    phoneNumber: string;
-    address: string;
-
-    constructor() {
-        this.id = 0;
-        this.firstName = '';
-        this.lastName = '';
-        this.email = '';
-        this.age = 0;
-        this.phoneNumber = '';
-        this.address = '';
-    }
+    id: number = 0;
+    firstName: string = '';
+    lastName: string = '';
+    email: string = '';
+    phoneNumber: string = '';
+    age: number = 0;
+    address: {
+        id: number;
+        country: string;
+        city: string;
+        street: string;
+        houseNumber: number;
+    } = {
+        id: 0,
+        country: '',
+        city: '',
+        street: '',
+        houseNumber: 0
+    };
 }

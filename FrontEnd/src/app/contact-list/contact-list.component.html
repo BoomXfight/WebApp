@@ -2,14 +2,16 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Id</th>
             <th>First name</th>
             <th>Last name</th>
             <th>Email</th>
             <th>Age</th>
             <th>Phone number</th>
-            <th>Address</th>
-            <th>Actions</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>House number</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +22,10 @@
             <td> {{contact.email}} </td>
             <td> {{contact.age}} </td>
             <td> {{contact.phoneNumber}} </td>
-            <td> {{contact.address}} </td>
+            <td> {{contact.address.country}} </td>
+            <td> {{contact.address.city}} </td>
+            <td> {{contact.address.street}} </td>
+            <td> {{contact.address.houseNumber}} </td>
             <td>
                 <button (click)="updateContact(contact.id)" class="btn btn-info">Update</button>
             </td>
