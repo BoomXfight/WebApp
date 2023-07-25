@@ -81,22 +81,27 @@ public class ContactServiceIm implements ContactService {
                     (dto.getAddress().getCity(), dto.getAddress().getCountry(), dto.getAddress().getStreet(), dto.getAddress().getHouseNumber());
 
             dao.setAddress(existingAddress);
-            dao.getAddress().setId(existingAddress.getId());
+            dao.getAddress().setId(existingAddress.getId()); // TO DO CHECK
         }
         else {
             //Formatting and adding a new address
-            dto.getAddress().setCountry(dto.getAddress().getCountry().toLowerCase());
-            dto.getAddress().setCity(dto.getAddress().getCity().toLowerCase());
-            dto.getAddress().setStreet(dto.getAddress().getStreet().toLowerCase());
+            dto.getAddress().setCountry(dto.getAddress().getCountry().substring(0,1).toUpperCase() +
+                    dto.getAddress().getCountry().substring(1).toLowerCase());
+            dto.getAddress().setCity(dto.getAddress().getCity().substring(0,1).toUpperCase() +
+                    dto.getAddress().getCity().substring(1).toLowerCase());
+            dto.getAddress().setStreet(dto.getAddress().getStreet().substring(0,1).toUpperCase() +
+                    dto.getAddress().getStreet().substring(1).toLowerCase());
 
             addressRepository.save(dto.getAddress());
             dao.setAddress(dto.getAddress());
         }
 
-        dao.setFirstName(dto.getFirstName());
-        dao.setLastName(dto.getLastName());
+        dao.setFirstName(dto.getFirstName().substring(0,1).toUpperCase() +
+                dto.getFirstName().substring(1).toLowerCase());
+        dao.setLastName(dto.getLastName().substring(0,1).toUpperCase() +
+                dto.getLastName().substring(1).toLowerCase());
         dao.setAge(dto.getAge());
-        dao.setEmail(dto.getEmail());
+        dao.setEmail(dto.getEmail().toLowerCase());
         dao.setPhoneNumber(dto.getPhoneNumber());
 
         contactRepository.save(dao);
@@ -148,19 +153,24 @@ public class ContactServiceIm implements ContactService {
             } else {
                 //Properly format the new address
                 AddressDAO newAddress = new AddressDAO();
-                newAddress.setCountry(updateContact.getAddress().getCountry().toLowerCase());
-                newAddress.setCity(updateContact.getAddress().getCity().toLowerCase());
-                newAddress.setStreet(updateContact.getAddress().getStreet().toLowerCase());
+                newAddress.setCountry(updateContact.getAddress().getCountry().substring(0,1).toUpperCase() +
+                        updateContact.getAddress().getCountry().substring(1).toLowerCase());
+                newAddress.setCity(updateContact.getAddress().getCity().substring(0,1).toUpperCase() +
+                        updateContact.getAddress().getCity().substring(1).toLowerCase());
+                newAddress.setStreet(updateContact.getAddress().getStreet().substring(0,1).toUpperCase() +
+                        updateContact.getAddress().getStreet().substring(1).toLowerCase());
                 newAddress.setHouseNumber(updateContact.getAddress().getHouseNumber());
 
                 addressRepository.save(newAddress); //Add to the address repository
                 dao.setAddress(newAddress);
             }
 
-            dao.setFirstName(updateContact.getFirstName());
-            dao.setLastName(updateContact.getLastName());
+            dao.setFirstName(updateContact.getFirstName().substring(0,1).toUpperCase() +
+                    updateContact.getFirstName().substring(1).toLowerCase());
+            dao.setLastName(updateContact.getLastName().substring(0,1).toUpperCase() +
+                    updateContact.getLastName().substring(1).toLowerCase());
             dao.setPhoneNumber(updateContact.getPhoneNumber());
-            dao.setEmail(updateContact.getEmail());
+            dao.setEmail(updateContact.getEmail().toLowerCase());
             dao.setAge(updateContact.getAge());
             contactRepository.save(dao);
 
@@ -214,5 +224,13 @@ public class ContactServiceIm implements ContactService {
             return false;
 
         return true;
+    }
+
+    public static String capitalize(String txt) {
+        if (txt == null || txt.isEmpty()) {
+            return txt;
+        }
+
+        return txt.substring(0, 1).toUpperCase() + txt.substring(1);
     }
 }
