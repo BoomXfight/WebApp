@@ -120,7 +120,7 @@ public class ContactServiceIm implements ContactService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format.");
             }
 
-            if(updateContact.getAge() <= 15) {
+            if(updateContact.getAge() < 15) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15.");
             }
 
