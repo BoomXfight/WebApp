@@ -37,7 +37,7 @@ public class ContactDAO {
     @Column(name = "age")
     private byte age;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private AddressDAO address;
 }

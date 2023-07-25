@@ -47,7 +47,6 @@ public class ContactServiceIm implements ContactService {
     @Override
     public ResponseEntity<?> saveContact(@RequestBody ContactDTO dto) {
         ContactDAO dao = new ContactDAO();
-        // AddressDAO
 
         //Check for the logical and format errors
         if (!isValidNameFormat(dto.getFirstName())) {
@@ -104,7 +103,7 @@ public class ContactServiceIm implements ContactService {
         return ResponseEntity.ok(dao);
     }
 
-    @Override
+    @Override // TO DO
     public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO updateContact) {
         Optional<ContactDAO> optionalContact = contactRepository.findById(id);
 
@@ -158,17 +157,21 @@ public class ContactServiceIm implements ContactService {
             return ResponseEntity.ok(updatedContactDAO);
         }
         else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found.");
         }
     }
 
-    @Override
+    @Override // TO DO
     public ResponseEntity<?> deleteContact(@PathVariable long id) {
-        ContactDAO contactDAO = contactRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Contact with id: " + id + " does not exist."));
-
-        contactRepository.delete(contactDAO);
-        return ResponseEntity.ok("OK");
+        Optional<ContactDAO> optional = contactRepository.findById(id);
+        if(optional.isPresent()) {
+            ContactDAO del = optional.get();
+            contactRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successfully deleted.");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not find the object.");
+        }
     }
 
     private boolean isValidEmailFormat(String email) {
