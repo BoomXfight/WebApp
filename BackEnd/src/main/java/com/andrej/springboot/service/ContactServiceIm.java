@@ -76,15 +76,18 @@ public class ContactServiceIm implements ContactService {
 
         //Check whether the address exists
         if(addressRepository.existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
-                dto.getAddress().getCity(), dto.getAddress().getCountry(), dto.getAddress().getStreet(),
+                dto.getAddress().getCity(),
+                dto.getAddress().getCountry(),
+                dto.getAddress().getStreet(),
                 dto.getAddress().getHouseNumber())) {
-            AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber
-                    (dto.getAddress().getCity(), dto.getAddress().getCountry(), dto.getAddress().getStreet(), dto.getAddress().getHouseNumber());
+
+            AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
+                    dto.getAddress().getCity(), dto.getAddress().getCountry(), dto.getAddress().getStreet(),
+                    dto.getAddress().getHouseNumber());
 
             dao.setAddress(existingAddress);
-            dao.getAddress().setId(existingAddress.getId()); // TO DO CHECK
-        }
-        else {
+            dao.getAddress().setId(existingAddress.getId());
+        } else {
             //Formatting and adding a new address
             dto.getAddress().setCountry(dto.getAddress().getCountry().substring(0,1).toUpperCase() +
                     dto.getAddress().getCountry().substring(1).toLowerCase());
@@ -97,16 +100,14 @@ public class ContactServiceIm implements ContactService {
             dao.setAddress(dto.getAddress());
         }
 
-        dao.setFirstName(dto.getFirstName().substring(0,1).toUpperCase() +
-                dto.getFirstName().substring(1).toLowerCase());
-        dao.setLastName(dto.getLastName().substring(0,1).toUpperCase() +
-                dto.getLastName().substring(1).toLowerCase());
+        dao.setFirstName(dto.getFirstName().substring(0,1).toUpperCase() + dto.getFirstName().substring(1).toLowerCase());
+        dao.setLastName(dto.getLastName().substring(0,1).toUpperCase() + dto.getLastName().substring(1).toLowerCase());
         dao.setAge(dto.getAge());
         dao.setEmail(dto.getEmail().toLowerCase());
         dao.setPhoneNumber(dto.getPhoneNumber());
 
         contactRepository.save(dao);
-        return ResponseEntity.ok(dao);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Contact successfully added to the database.");
     }
 
     @Override // TO DO
