@@ -1,0 +1,86 @@
+{
+        "firstName": "Andrej",
+        "lastName": "Becka",
+        "email": "andrej.becka30@gmail.com",
+        "phoneNumber": "0950893675",
+        "age": 20,
+        "address": {
+            "country": "slovakia",
+            "city": "kosice",
+            "street": "kuRska",
+            "houseNumber": 3
+        }
+    }
+    
+{
+        "firstName": "Peter",
+        "lastName": "Becka",
+        "email": "peter.becka30@gmail.com",
+        "phoneNumber": "1950893675",
+        "age": 50,
+        "address": {
+            "country": "slovakia",
+            "city": "kosice",
+            "street": "kuRska",
+            "houseNumber": 3
+        }
+    }
+    
+{
+        "firstName": "Alojz",
+        "lastName": "Becka",
+        "email": "alojz.becka30@gmail.com",
+        "phoneNumber": "2950893675",
+        "age": 50,
+        "address": {
+            "country": "slovakia",
+            "city": "kosice",
+            "street": "kuRska",
+            "houseNumber": 3
+        }
+    }
+    
+{
+        "firstName": "Tomas",
+        "lastName": "Becka",
+        "email": "tomas.becka30@gmail.com",
+        "phoneNumber": "5950893675",
+        "age": 50,
+        "address": {
+            "country": "Slovakia",
+            "city": "Kosice",
+            "street": "Kurska",
+            "houseNumber": 10
+        }
+    }
+  
+{
+        "firstName": "Jozef",
+        "lastName": "Compel",
+        "email": "jozef.compel30@gmail.com",
+        "phoneNumber": "5950893175",
+        "age": 24,
+        "address": {
+            "country": "slovakia",
+            "city": "kosice",
+            "street": "kurska",
+            "houseNumber": 10
+        }
+    }  
+    
+{
+        "firstName": "Jozef",
+        "lastName": "Compel",
+        "email": "jozef.compel35@gmail.com",
+        "phoneNumber": "9550893175",
+        "age": 55,
+        "address": {
+            "country": "SLOVAKIA",
+            "city": "KOSICE",
+            "street": "KURSKA",
+            "houseNumber": 10
+        }
+    }     
+        
+    
+    

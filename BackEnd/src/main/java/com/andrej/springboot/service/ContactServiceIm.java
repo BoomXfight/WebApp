@@ -33,15 +33,16 @@ public class ContactServiceIm implements ContactService {
 
         if(optionalContact.isPresent()) {
             ContactDAO contactDAO = optionalContact.get();
-            return ResponseEntity.ok(contactDAO);
+            return ResponseEntity.status(HttpStatus.OK).body(contactDAO);
         }
         else
-            return new ResponseEntity<>("Contact with id: " + id + " was not found.", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Contact with id: " + id + " was not found.");
     }
 
     @Override
-    public List<ContactDAO> getAllContacts() {
-        return contactRepository.findAll();
+    public ResponseEntity<List<ContactDAO>> getAllContacts() {
+        return ResponseEntity.status(HttpStatus.OK).body(contactRepository.findAll());
     }
 
     @Override

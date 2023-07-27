@@ -12,7 +12,7 @@ public interface ContactService {
 
     public ResponseEntity<?> getContactById(@PathVariable long id);
 
-    public List<ContactDAO> getAllContacts();
+    public ResponseEntity<List<ContactDAO>> getAllContacts();
 
     public ResponseEntity<?> saveContact(@RequestBody ContactDTO contactDTO);
 
