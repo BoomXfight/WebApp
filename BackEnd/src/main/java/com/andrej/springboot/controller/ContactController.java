@@ -7,6 +7,7 @@ import com.andrej.springboot.model.dto.ContactDTO;
 import com.andrej.springboot.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 //@RequiredArgsConstructor
@@ -24,7 +25,8 @@ public class ContactController {
     }
 
     @GetMapping("/contacts")
-    public List<ContactDAO> getAllContacts() {
+    @PreAuthorize("has")
+    public ResponseEntity<List<ContactDAO>> getAllContacts() {
         return service.getAllContacts();
     }
 
