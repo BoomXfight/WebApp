@@ -25,7 +25,6 @@ public class ContactController {
     }
 
     @GetMapping("/contacts")
-    @PreAuthorize("has")
     public ResponseEntity<List<ContactDAO>> getAllContacts() {
         return service.getAllContacts();
     }

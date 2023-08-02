@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.andrej.springboot.user.Role.ADMIN;
+import static com.andrej.springboot.user.Role.USER;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -21,9 +24,16 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        Role role;
+        if(repo.count() == 0)
+            role = ADMIN;
+        else
+            role = USER;
+
         var user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
-                                 .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
-                                 .role(Role.USER).build();
+                       .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
+                       .role(role).build();
 
         repo.save(user);
         var jwtToken = jwtService.generateToken(user);
