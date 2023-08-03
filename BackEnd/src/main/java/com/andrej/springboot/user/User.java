@@ -30,7 +30,7 @@ public class User implements UserDetails {
 
     @Override //Returns the list of user roles
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
