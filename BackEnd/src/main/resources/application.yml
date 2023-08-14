@@ -1,0 +1,33 @@
+
+spring:
+  # Database setup
+  datasource:
+    url: jdbc:postgresql://localhost:5432/phonebookdatabase
+    username: postgres
+    password: 123
+
+  jpa:
+    properties:
+      # Details for hibernate
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: update #automatically creates tables in our database
+
+  #Security setup -> Keycloak
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/ContactApplication
+          jwk-set-uri: http://localhost:8080/realms/ContactApplication/protocol/openid-connect/certs
+
+#Different port due to Keycloak running on 8080
+server:
+  port: 9999
+
+#
+jwt:
+  auth:
+    converter:
+      principle-attribute: preferred_username
+      resource-id: back_end

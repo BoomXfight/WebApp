@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 //@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
 @CrossOrigin("http://localhost:4200/")
 public class ContactController {
 
@@ -26,31 +25,31 @@ public class ContactController {
     }
 
     @GetMapping("/contacts")
-    @PreAuthorize("hasAuthority('contacts:read')")
+    @PreAuthorize("hasAnyRole('user', 'admin')")
     public ResponseEntity<List<ContactDAO>> getAllContacts() {
         return service.getAllContacts();
     }
 
     @GetMapping("/contacts/{id}")
-    @PreAuthorize("hasAuthority('contact:read1')")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<?> getContactById(@PathVariable long id) {
         return service.getContactById(id);
     }
 
     @PostMapping("/contacts")
-    @PreAuthorize("hasAuthority('contact:create')")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<?> saveContact(@RequestBody ContactDTO contactDTO) {
         return service.saveContact(contactDTO);
     }
 
     @PutMapping("/contacts/{id}")
-    @PreAuthorize("hasAuthority('contact:update')")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails) {
         return service.updateContact(id, contactDAODetails);
     }
 
     @DeleteMapping("contacts/{id}")
-    @PreAuthorize("hasAuthority('contact:delete')")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<?> deleteContact(@PathVariable long id) {
         return service.deleteContact(id);
     }
