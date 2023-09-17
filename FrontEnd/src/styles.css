@@ -1,20 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.min.css";
 
-.navbar.navbar-expand-sm.navbar-dark{
-    position: relative;
-    background-color: blueviolet;
-}
-
-.nav-item{
-
-}
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    color: white;
-    background-color: blueviolet;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

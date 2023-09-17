@@ -1,20 +1,9 @@
-<nav class="navbar navbar-expand-sm navbar-dark">
-    <ul class="navbar-nav">
-        <li class=" ">
-            <a routerLink="contacts" routerLinkActive="active" class="nav-link">Phone Book</a>
-        </li>
-        <li class=" ">
-            <a routerLink="create-contact" routerLinkActive="active" class="nav-link">Add Contact</a>
-        </li>
-    </ul>
-</nav>
+<dashboard-component></dashboard-component>
+<admin-component *ngIf="isAdmin"></admin-component>
+<user-component *ngIf="isUser"></user-component>
 
-<h1 class="text-center"> {{title}} </h1>
-<div class="container">
-    <router-outlet></router-outlet>
-</div>
-<footer class = "footer">
-    <div class="container">
-        <span>All rights reserved</span>
-    </div>
-</footer>
+<!--
+<button routerLink="manager">Manager Page</button>
+<button routerLink="admin">Admin Page</button>
+<router-outlet></router-outlet>
+-->
