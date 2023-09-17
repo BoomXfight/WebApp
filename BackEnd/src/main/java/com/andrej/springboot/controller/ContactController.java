@@ -25,31 +25,31 @@ public class ContactController {
     }
 
     @GetMapping("/contacts")
-    @PreAuthorize("hasAnyRole('user', 'admin')")
+    @PreAuthorize("hasAnyRole('backend_user', 'backend_admin')")
     public ResponseEntity<List<ContactDAO>> getAllContacts() {
         return service.getAllContacts();
     }
 
     @GetMapping("/contacts/{id}")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PreAuthorize("hasAnyRole('backend_admin')")
     public ResponseEntity<?> getContactById(@PathVariable long id) {
         return service.getContactById(id);
     }
 
     @PostMapping("/contacts")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PreAuthorize("hasAnyRole('backend_admin')")
     public ResponseEntity<?> saveContact(@RequestBody ContactDTO contactDTO) {
         return service.saveContact(contactDTO);
     }
 
     @PutMapping("/contacts/{id}")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PreAuthorize("hasAnyRole('backend_admin')")
     public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAODetails) {
         return service.updateContact(id, contactDAODetails);
     }
 
     @DeleteMapping("contacts/{id}")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PreAuthorize("hasAnyRole('backend_admin')")
     public ResponseEntity<?> deleteContact(@PathVariable long id) {
         return service.deleteContact(id);
     }

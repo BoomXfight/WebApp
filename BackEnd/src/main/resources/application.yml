@@ -18,8 +18,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/ContactApplication
-          jwk-set-uri: http://localhost:8080/realms/ContactApplication/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/realms/Test
+          jwk-set-uri: http://localhost:8080/realms/Test/protocol/openid-connect/certs
 
 #Different port due to Keycloak running on 8080
 server:
@@ -30,4 +30,4 @@ jwt:
   auth:
     converter:
       principle-attribute: preferred_username
-      resource-id: back_end
+      resource-id: Backend
