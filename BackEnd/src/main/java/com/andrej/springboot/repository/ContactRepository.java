@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ContactRepository extends JpaRepository<ContactDAO, Long> {
 
     Optional<ContactDAO> findContactByEmailAndAge(String email, int age); //My own query example
+    Optional<ContactDAO> findContactDAOByEmail(String email);
 }

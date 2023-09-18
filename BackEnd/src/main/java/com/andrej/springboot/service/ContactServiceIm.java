@@ -51,27 +51,31 @@ public class ContactServiceIm implements ContactService {
 
         //Check for the logical and format errors
         if (!isValidNameFormat(dto.getFirstName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short!");
         }
 
         if (!isValidNameFormat(dto.getLastName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short!");
         }
 
         if (!isValidEmailFormat(dto.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format!");
         }
 
         if (!isValidNumber(dto.getPhoneNumber())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format!");
         }
 
         if(dto.getAge() <= 15) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15!");
         }
 
         if(!isValidAddress(dto.getAddress())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address!");
+        }
+
+        if(contactRepository.findContactDAOByEmail(dto.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already used!");
         }
 
         //Check whether the address exists
