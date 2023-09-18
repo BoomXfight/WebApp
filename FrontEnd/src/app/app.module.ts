@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { UpdateContactComponent } from './admin/update-contact/update-contact.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { UpdateContactComponent } from './admin/update-contact/update-contact.co
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatButtonModule
   ],
   providers: [
     {
