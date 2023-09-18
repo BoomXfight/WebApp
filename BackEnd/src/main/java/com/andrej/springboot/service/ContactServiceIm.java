@@ -118,27 +118,27 @@ public class ContactServiceIm implements ContactService {
     public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO updateContact) {
         // Check the validness of the updateContact
         if (!isValidNameFormat(updateContact.getFirstName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short!");
         }
 
         if (!isValidNameFormat(updateContact.getLastName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Last name too short!");
         }
 
         if (!isValidEmailFormat(updateContact.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format!");
         }
 
         if (!isValidNumber(updateContact.getPhoneNumber())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid phone number format!");
         }
 
         if(updateContact.getAge() < 15) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Age less than 15!");
         }
 
         if(!isValidAddress(updateContact.getAddress())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address!");
         }
 
         Optional<ContactDAO> optionalContact = contactRepository.findById(id);
