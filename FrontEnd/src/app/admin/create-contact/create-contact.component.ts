@@ -23,8 +23,7 @@ export class CreateContactComponent {
     error => {
       console.log(error);
       this.toastr.error(error.error, "Error");
-    }
-    );
+    });
   }
   
 

@@ -21,6 +21,7 @@ import { TableComponent } from './admin/table/table.component';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { UpdateContactComponent } from './admin/update-contact/update-contact.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ToastrModule } from 'ngx-toastr';
     DashboardComponent,
     UserComponent,
     CreateContactComponent,
-    TableComponent
+    TableComponent,
+    UpdateContactComponent
   ],
   imports: [
     BrowserModule,

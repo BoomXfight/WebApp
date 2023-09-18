@@ -24,11 +24,20 @@ export class TableComponent {
     this.fetchData();
   }
 
+/**
+ * This method filters the table for a specific substring match
+ * @param data 
+ */
   Filterchange(data: Event) {
     const value = (data.target as HTMLInputElement).value;
     this.dataSource.filter = value;
   }
 
+  /**
+   * This method deletes the contact from the database and informs the user
+   * about the successful deletion of the contact
+   * @param id 
+   */
   deleteContact(id: number) {
     this.service.deleteContact(id).subscribe(response => {
       console.log('Deleted successfully', response);
@@ -40,6 +49,13 @@ export class TableComponent {
     });
   }
 
+  updateContact(id: number) {
+    this.router.navigate(['update-contact', id]);
+  }
+
+  /**
+   * This method fetches the data from the backend and updates the mat-table content
+   */
   fetchData() {
     this.service.getContactList().subscribe(res => {
       this.contactList = res;
@@ -48,4 +64,6 @@ export class TableComponent {
       this.dataSource.sort = this.sort;
     })
   }
+
+
 }

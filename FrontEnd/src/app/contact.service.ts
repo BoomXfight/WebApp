@@ -22,8 +22,8 @@ export class ContactService {
     return this.httpClient.get<Contact>(`/api/v1/contacts/${id}`);
   }
 
-  updateContact(id: number, updatedContact: Contact): Observable<Object> {
-    return this.httpClient.put(`/api/v1/contacts/${id}`, updatedContact);
+  updateContact(id: number, updatedContact: Contact): Observable<HttpResponse<string>> {
+    return this.httpClient.put<string>(`/api/v1/contacts/${id}`, updatedContact, { observe: 'response', responseType: 'text' as 'json'});
   }
 
   deleteContact(id: number): Observable<Object> {
