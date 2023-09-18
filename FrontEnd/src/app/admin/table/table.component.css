@@ -3,7 +3,11 @@ mat-card{
 }
 
 button{
-  margin: 2px;
+  margin: 3px;
+  border-radius: 5px;
+  border-width: 2px;
+  box-shadow: none;
+  border-color: #3f4245;
 }
 
 th{
