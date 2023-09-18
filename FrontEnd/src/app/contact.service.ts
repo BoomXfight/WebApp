@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient} from "@angular/common/http";
+import { HttpClient, HttpResponse} from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Contact } from "./contact";
 
@@ -14,8 +14,8 @@ export class ContactService {
     return this.httpClient.get<Contact[]>("/api/v1/contacts");
   }
 
-  createContact(contact: Contact): Observable<Object> {
-    return this.httpClient.post("/api/v1/contacts", contact);
+  createContact(contact: Contact): Observable<HttpResponse<string>> {
+    return this.httpClient.post<string>("/api/v1/contacts", contact, { observe: 'response', responseType: 'text' as 'json' });
   }
 
   getContactById(id: number): Observable<Contact> {
@@ -24,5 +24,9 @@ export class ContactService {
 
   updateContact(id: number, updatedContact: Contact): Observable<Object> {
     return this.httpClient.put(`/api/v1/contacts/${id}`, updatedContact);
+  }
+
+  deleteContact(id: number): Observable<Object> {
+    return this.httpClient.delete(`/api/v1/contacts/${id}`);
   }
 }

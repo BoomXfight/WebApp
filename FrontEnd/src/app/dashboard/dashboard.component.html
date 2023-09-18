@@ -1,10 +1,12 @@
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
-  <a class="navbar-brand" routerLink="app-root"> PhoneBook </a>
+  <a class="navbar-brand" routerLink="admin-table" routerLinkActive="active">
+    PhoneBook
+  </a>
 
   <ul class="navbar-nav mr-auto">
     <li class="nav-item" *ngIf="isAdmin">
-      <a routerLink="create-employee" routerLinkActive="active" class="nav-link"
-        >Add Employee</a
+      <a routerLink="create-contact" routerLinkActive="active" class="nav-link"
+        >Add contact</a
       >
     </li>
   </ul>

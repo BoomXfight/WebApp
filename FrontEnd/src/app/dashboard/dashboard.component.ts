@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 
 @Component({
@@ -10,9 +11,13 @@ export class DashboardComponent implements OnInit {
   
   isAdmin = false;
 
-  constructor(private keycloakService: KeycloakService) {}
+  constructor(private keycloakService: KeycloakService, private router: Router) {}
   logout() {
     this.keycloakService.logout();
+  }
+
+  redirectToEmployee() {
+    this.router.navigate(['create-employee']);
   }
 
   ngOnInit(): void {

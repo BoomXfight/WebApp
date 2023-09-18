@@ -16,6 +16,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { CreateContactComponent } from './admin/create-contact/create-contact.component';
+import { TableComponent } from './admin/table/table.component';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -23,7 +28,9 @@ import { MatInputModule } from '@angular/material/input';
     AccessDeniedComponent,
     AdminComponent,
     DashboardComponent,
-    UserComponent
+    UserComponent,
+    CreateContactComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +43,10 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     MatSortModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     {

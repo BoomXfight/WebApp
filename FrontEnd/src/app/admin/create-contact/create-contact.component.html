@@ -1,0 +1,104 @@
+<div class="col-md-6 offset-md-3">
+  <h2 class="header">Create contact</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label> First Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="firstName"
+        [(ngModel)]="contact.firstName"
+        name="firstName"
+      />
+
+      <label> Last Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="lastName"
+        [(ngModel)]="contact.lastName"
+        name="lastName"
+      />
+    </div>
+
+    <div class="form-group">
+      <label> Email </label>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        [(ngModel)]="contact.email"
+        name="email"
+      />
+    </div>
+
+    <div class="form-group">
+      <label> Phone Number </label>
+      <input
+        type="text"
+        class="form-control"
+        id="phoneNumber"
+        [(ngModel)]="contact.phoneNumber"
+        name="phoneNumber"
+      />
+    </div>
+
+    <div class="form-group">
+      <label> Age </label>
+      <input
+        type="number"
+        class="form-control"
+        id="age"
+        [(ngModel)]="contact.age"
+        name="age"
+      />
+    </div>
+
+    <div class="form-group">
+      <label> Country </label>
+      <input
+        type="text"
+        class="form-control"
+        id="country"
+        [(ngModel)]="contact.address.country"
+        name="country"
+      />
+    </div>
+
+    <div class="form-group">
+      <label> City </label>
+      <input
+        type="text"
+        class="form-control"
+        id="city"
+        [(ngModel)]="contact.address.city"
+        name="city"
+      />
+    </div>
+
+    <div class="form-group">
+      <label> Street </label>
+      <input
+        type="text"
+        class="form-control"
+        id="street"
+        [(ngModel)]="contact.address.street"
+        name="street"
+      />
+    </div>
+
+    <div class="form-group">
+      <label> House number </label>
+      <input
+        type="text"
+        class="form-control"
+        id="houseNumber"
+        [(ngModel)]="contact.address.houseNumber"
+        name="houseNumber"
+      />
+    </div>
+
+    <button class="btn btn-success" type="submit">Submit</button>
+  </form>
+</div>
