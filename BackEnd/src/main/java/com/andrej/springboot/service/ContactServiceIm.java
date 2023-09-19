@@ -1,7 +1,5 @@
 package com.andrej.springboot.service;
 
-import com.andrej.springboot.exception.InvalidEmailFormatException;
-import com.andrej.springboot.exception.ResourceNotFoundException;
 import com.andrej.springboot.model.dao.AddressDAO;
 import com.andrej.springboot.model.dao.ContactDAO;
 import com.andrej.springboot.model.dto.AddressDTO;
@@ -228,13 +226,10 @@ public class ContactServiceIm implements ContactService {
     }
 
     private boolean isValidAddress(AddressDAO address) {
-        if(address.getCountry().length() < 4 || //Chad
-           address.getCity().length() < 3 || // Goa
-           address.getStreet().length() < 3 || // estimate
-           address.getHouseNumber() < 1)
-            return false;
-
-        return true;
+      return address.getCountry().length() >= 4 && //Chad
+              address.getCity().length() >= 3 && // Goa
+              address.getStreet().length() >= 3 && // estimate
+              address.getHouseNumber() >= 1;
     }
 
     public static String capitalize(String txt) {
