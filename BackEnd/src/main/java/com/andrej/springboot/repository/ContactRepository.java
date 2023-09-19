@@ -1,14 +1,14 @@
 package com.andrej.springboot.repository;
 
-import com.andrej.springboot.model.dao.ContactDAO;
+import com.andrej.springboot.model.entity.ContactEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface ContactRepository extends JpaRepository<ContactDAO, Long> {
+public interface ContactRepository extends JpaRepository<ContactEntity, Long> {
 
-    Optional<ContactDAO> findContactByEmailAndAge(String email, int age); //My own query example
-    Optional<ContactDAO> findContactDAOByEmail(String email);
+    Optional<ContactEntity> findContactByEmailAndAge(String email, int age); //My own query example
+    Optional<ContactEntity> findContactDAOByEmail(String email);
 }

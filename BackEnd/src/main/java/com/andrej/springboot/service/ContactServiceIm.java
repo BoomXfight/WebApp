@@ -1,8 +1,7 @@
 package com.andrej.springboot.service;
 
-import com.andrej.springboot.model.dao.AddressDAO;
-import com.andrej.springboot.model.dao.ContactDAO;
-import com.andrej.springboot.model.dto.AddressDTO;
+import com.andrej.springboot.model.entity.AddressEntity;
+import com.andrej.springboot.model.entity.ContactEntity;
 import com.andrej.springboot.model.dto.ContactDTO;
 import com.andrej.springboot.repository.AddressRepository;
 import com.andrej.springboot.repository.ContactRepository;
@@ -13,10 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
-import java.util.Spliterator;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +24,12 @@ public class ContactServiceIm implements ContactService {
 
     @Override
     public ResponseEntity<?> getContactById(long id) {
-        Optional<ContactDAO> optionalContact = contactRepository.findById(id);
+        Optional<ContactEntity> optionalContact = contactRepository.findById(id);
 
         if(optionalContact.isPresent()) {
-            ContactDAO contactDAO = optionalContact.get();
-            return ResponseEntity.status(HttpStatus.OK).body(contactDAO);
+            ContactEntity contactEntity = optionalContact.get();
+            ContactDTO contactDTO = convertEntityToDto(contactEntity);
+            return ResponseEntity.status(HttpStatus.OK).body(contactDTO);
         }
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -39,13 +37,13 @@ public class ContactServiceIm implements ContactService {
     }
 
     @Override
-    public ResponseEntity<List<ContactDAO>> getAllContacts() {
+    public ResponseEntity<List<ContactEntity>> getAllContacts() {
         return ResponseEntity.status(HttpStatus.OK).body(contactRepository.findAll());
     }
 
     @Override
     public ResponseEntity<?> saveContact(@RequestBody ContactDTO dto) {
-        ContactDAO dao = new ContactDAO();
+        ContactEntity dao = new ContactEntity();
 
         //Check for the logical and format errors
         if (!isValidNameFormat(dto.getFirstName())) {
@@ -83,7 +81,7 @@ public class ContactServiceIm implements ContactService {
                 dto.getAddress().getStreet(),
                 dto.getAddress().getHouseNumber())) {
 
-            AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
+            AddressEntity existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
                     dto.getAddress().getCity(), dto.getAddress().getCountry(), dto.getAddress().getStreet(),
                     dto.getAddress().getHouseNumber());
 
@@ -113,7 +111,7 @@ public class ContactServiceIm implements ContactService {
     }
 
     @Override
-    public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO updateContact) {
+    public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactEntity updateContact) {
         // Check the validness of the updateContact
         if (!isValidNameFormat(updateContact.getFirstName())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First name too short!");
@@ -139,16 +137,16 @@ public class ContactServiceIm implements ContactService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address!");
         }
 
-        Optional<ContactDAO> optionalContact = contactRepository.findById(id);
+        Optional<ContactEntity> optionalContact = contactRepository.findById(id);
         if (optionalContact.isPresent()) {
-            ContactDAO dao = optionalContact.get();
+            ContactEntity dao = optionalContact.get();
 
             // Check whether the address exists
             if (addressRepository.existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
                     updateContact.getAddress().getCity(), updateContact.getAddress().getCountry(),
                     updateContact.getAddress().getStreet(), updateContact.getAddress().getHouseNumber())) {
 
-                AddressDAO existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
+                AddressEntity existingAddress = addressRepository.findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(
                         updateContact.getAddress().getCity(), updateContact.getAddress().getCountry(),
                         updateContact.getAddress().getStreet(), updateContact.getAddress().getHouseNumber());
 
@@ -156,7 +154,7 @@ public class ContactServiceIm implements ContactService {
                 dao.getAddress().setId(existingAddress.getId()); // Probably unnecessary
             } else {
                 //Properly format the new address
-                AddressDAO newAddress = new AddressDAO();
+                AddressEntity newAddress = new AddressEntity();
                 newAddress.setCountry(updateContact.getAddress().getCountry().substring(0,1).toUpperCase() +
                         updateContact.getAddress().getCountry().substring(1).toLowerCase());
                 newAddress.setCity(updateContact.getAddress().getCity().substring(0,1).toUpperCase() +
@@ -186,9 +184,9 @@ public class ContactServiceIm implements ContactService {
 
     @Override
     public ResponseEntity<?> deleteContact(@PathVariable long id) {
-        Optional<ContactDAO> optional = contactRepository.findById(id);
+        Optional<ContactEntity> optional = contactRepository.findById(id);
         if(optional.isPresent()) {
-            ContactDAO del = optional.get();
+            ContactEntity del = optional.get();
             contactRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successfully deleted.");
         }
@@ -225,11 +223,16 @@ public class ContactServiceIm implements ContactService {
         return true;
     }
 
-    private boolean isValidAddress(AddressDAO address) {
+    private boolean isValidAddress(AddressEntity address) {
       return address.getCountry().length() >= 4 && //Chad
               address.getCity().length() >= 3 && // Goa
               address.getStreet().length() >= 3 && // estimate
               address.getHouseNumber() >= 1;
+    }
+
+    private ContactDTO convertEntityToDto(ContactEntity entity) {
+        return new ContactDTO(entity.getId(), entity.getAge(), entity.getFirstName(), entity.getLastName(),
+                              entity.getEmail(), entity.getPhoneNumber(), entity.getAddress());
     }
 
     public static String capitalize(String txt) {
@@ -239,4 +242,6 @@ public class ContactServiceIm implements ContactService {
 
         return txt.substring(0, 1).toUpperCase() + txt.substring(1);
     }
+
+
 }

@@ -1,9 +1,6 @@
-package com.andrej.springboot.model.dao;
+package com.andrej.springboot.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,10 +13,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContactDAO {
+public class ContactEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -39,5 +36,5 @@ public class ContactDAO {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
-    private AddressDAO address;
+    private AddressEntity address;
 }

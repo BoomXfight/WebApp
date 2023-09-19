@@ -1,6 +1,6 @@
 package com.andrej.springboot.model.dto;
 
-import com.andrej.springboot.model.dao.AddressDAO;
+import com.andrej.springboot.model.entity.AddressEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +15,8 @@ import lombok.Setter;
 @Setter
 public class ContactDTO {
 
+    private long id;
+
     private byte age;
 
     private String firstName;
@@ -25,5 +27,5 @@ public class ContactDTO {
 
     private String phoneNumber;
 
-    private AddressDAO address;
+    private AddressEntity address;
 }

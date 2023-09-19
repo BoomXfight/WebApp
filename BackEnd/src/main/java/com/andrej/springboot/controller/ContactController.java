@@ -2,7 +2,7 @@ package com.andrej.springboot.controller;
 
 import java.util.List;
 
-import com.andrej.springboot.model.dao.ContactDAO;
+import com.andrej.springboot.model.entity.ContactEntity;
 import com.andrej.springboot.model.dto.ContactDTO;
 import com.andrej.springboot.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ContactController {
      */
     @GetMapping("/contacts")
     @PreAuthorize("hasAnyRole('backend_user', 'backend_admin')")
-    public ResponseEntity<List<ContactDAO>> getAllContacts() {
+    public ResponseEntity<List<ContactEntity>> getAllContacts() {
         return service.getAllContacts();
     }
 
@@ -61,14 +61,14 @@ public class ContactController {
     /**
      * This endpoint is responsible for updating a contact in the database with a specific id
      * @param id -> Unique identifier of a contact
-     * @param contactDAO -> Contact with new credentials to be updated
+     * @param contactEntity -> Contact with new credentials to be updated
      * @return -> Http response indicating the successful modification of a contact or an HTTP response with an error
      * message indicating which part of the contactDAO was incompatible
      */
     @PutMapping("/contacts/{id}")
     @PreAuthorize("hasAnyRole('backend_admin')")
-    public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO contactDAO) {
-        return service.updateContact(id, contactDAO);
+    public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactEntity contactEntity) {
+        return service.updateContact(id, contactEntity);
     }
 
     /**
