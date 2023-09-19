@@ -6,11 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Data transfer object class
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ContactDTO { //data transfer object
+public class ContactDTO {
 
     private byte age;
 
