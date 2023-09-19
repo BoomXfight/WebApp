@@ -15,7 +15,7 @@ import lombok.Setter;
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "country")
     private String country;

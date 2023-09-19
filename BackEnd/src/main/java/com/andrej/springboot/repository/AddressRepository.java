@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity, Long> {
-    AddressEntity findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(String city, String country, String street , int houseNumber);
-    Boolean existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(String city, String country, String street , int houseNumber);
+    AddressEntity findByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(String city, String country,
+                                                                                            String street , int houseNumber);
+    Boolean existsByCityIgnoreCaseAndCountryIgnoreCaseAndStreetIgnoreCaseAndHouseNumber(String city, String country,
+                                                                                        String street , int houseNumber);
 }

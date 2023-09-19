@@ -1,5 +1,6 @@
 package com.andrej.springboot.service;
 
+import com.andrej.springboot.model.dto.AddressDTO;
 import com.andrej.springboot.model.entity.AddressEntity;
 import com.andrej.springboot.model.entity.ContactEntity;
 import com.andrej.springboot.model.dto.ContactDTO;
@@ -23,6 +24,11 @@ public class ContactServiceIm implements ContactService {
     private final AddressRepository addressRepository;
 
     @Override
+    public ResponseEntity<List<ContactEntity>> getAllContacts() {
+        return ResponseEntity.status(HttpStatus.OK).body(contactRepository.findAll());
+    }
+
+    @Override
     public ResponseEntity<?> getContactById(long id) {
         Optional<ContactEntity> optionalContact = contactRepository.findById(id);
 
@@ -34,11 +40,6 @@ public class ContactServiceIm implements ContactService {
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Contact with id: " + id + " was not found.");
-    }
-
-    @Override
-    public ResponseEntity<List<ContactEntity>> getAllContacts() {
-        return ResponseEntity.status(HttpStatus.OK).body(contactRepository.findAll());
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ContactServiceIm implements ContactService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid address!");
         }
 
-        if(contactRepository.findContactDAOByEmail(dto.getEmail()).isPresent()) {
+        if(contactRepository.findContactEntityByEmail(dto.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already used!");
         }
 
@@ -235,13 +236,11 @@ public class ContactServiceIm implements ContactService {
                               entity.getEmail(), entity.getPhoneNumber(), entity.getAddress());
     }
 
-    public static String capitalize(String txt) {
+    private String capitalize(String txt) {
         if (txt == null || txt.isEmpty()) {
             return txt;
         }
 
         return txt.substring(0, 1).toUpperCase() + txt.substring(1);
     }
-
-
 }

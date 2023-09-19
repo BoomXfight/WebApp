@@ -9,6 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ContactRepository extends JpaRepository<ContactEntity, Long> {
 
-    Optional<ContactEntity> findContactByEmailAndAge(String email, int age); //My own query example
-    Optional<ContactEntity> findContactDAOByEmail(String email);
+    Optional<ContactEntity> findContactEntityByEmail(String email);
 }
