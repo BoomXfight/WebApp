@@ -114,7 +114,7 @@ public class ContactServiceIm implements ContactService {
         return ResponseEntity.status(HttpStatus.CREATED).body("Contact successfully added to the database.");
     }
 
-    @Override // TO DO
+    @Override
     public ResponseEntity<?> updateContact(@PathVariable long id, @RequestBody ContactDAO updateContact) {
         // Check the validness of the updateContact
         if (!isValidNameFormat(updateContact.getFirstName())) {
@@ -207,6 +207,11 @@ public class ContactServiceIm implements ContactService {
         return name.length() >= 2;
     }
 
+    /**
+     * This method validates the formatting of an email address
+     * @param number -> phone number to check
+     * @return true -> correct Slovak formatting, false -> incorrect Slovak formatting
+     */
     private boolean isValidNumber(String number) {
         if(number.length() != 10)
             return false;
@@ -224,7 +229,7 @@ public class ContactServiceIm implements ContactService {
 
     private boolean isValidAddress(AddressDAO address) {
         if(address.getCountry().length() < 4 || //Chad
-           address.getCity().length() < 4 || // Goa
+           address.getCity().length() < 3 || // Goa
            address.getStreet().length() < 3 || // estimate
            address.getHouseNumber() < 1)
             return false;
