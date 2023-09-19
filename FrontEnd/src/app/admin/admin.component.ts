@@ -7,14 +7,6 @@ import { environment } from 'src/environments/environment';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
-  message = 'message';
-
+export class AdminComponent {
   constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    this.http.get('/api/admin').subscribe((data: any) => {
-      this.message = data.message;
-    });
-  }
 }
